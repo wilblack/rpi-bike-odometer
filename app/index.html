@@ -1,0 +1,50 @@
+<script>
+    DOMAIN = "162.243.146.219:9093";
+    SOCKET_URL = "ws://" + DOMAIN + "/ws/";
+
+
+    window.onload = function() {
+        DOMAIN = "localhost:8888";
+        SOCKET_URL = "ws://" + DOMAIN + "/ws";
+        
+        console.log("opening socket connection to " + SOCKET_URL)
+        socket = new WebSocket(SOCKET_URL);
+        
+        socket.onopen = function(){
+            console.log("connection opened....");
+            handshake = {"text": "Hello from the browser"};
+            var out = JSON.stringify(handshake);
+            socket.send(out);
+        }
+
+        socket.onmessage = function(msg) {
+            /*
+            Listens for
+            - sensor_values
+            - new - This should have a camera IP address un the keyword 'camera_url'. 
+            */
+
+            var data = JSON.parse(msg.data);
+            console.log("['onmessage'] ", data);
+            var el = document.getElementById("msg");
+            el.innerHTML = data.text;
+
+        }
+
+        socket.onclose = function(){
+            //alert("connection closed....");
+            console.log("The connection has been closed.");
+            
+         }
+
+        socket.onerror = function(){
+            console.log("The was an error.");
+         }
+
+    };
+    
+
+
+</script>
+<h1>Bike Odometer</h1>
+<div id="msg"></div>
