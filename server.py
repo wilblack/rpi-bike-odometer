@@ -8,28 +8,22 @@ from math import pi
 
 
 
-
 PATH = os.path.dirname(os.path.abspath(__file__))
 
+try:
+   import RPi.GPIO as io
+except:
+    print "Could not import RPi.GPIO. Are you on a Raspberry Pi?"
 
-
-def sensor_setup():
-    try:
-        import RPi.GPIO as io
-    except:
-        print "Could not import RPi.GPIO. Are you on a Raspberry Pi?"
-    try:
         
-        io.setmode(io.BCM)
+io.setmode(io.BCM)
          
-        pir_pin = 18
-        door_pin = 23
-         
-        io.setup(pir_pin, io.IN)         # activate input
-        io.setup(door_pin, io.IN, pull_up_down=io.PUD_UP)  # activate input with PullUp
-    except:
-        print 'sensor_setup failed.'
-
+pir_pin = 18
+door_pin = 23
+        
+io.setup(pir_pin, io.IN)         # activate input
+io.setup(door_pin, io.IN, pull_up_down=io.PUD_UP)  # activate input with Pull
+print "Sensors intialized correctly"
 
 clients = []
 
@@ -44,6 +38,7 @@ class OdometerThread (threading.Thread):
 
     def run(self):
         print "Starting Odometer Thread"
+
         wheel_circumference = 0.5 * 2 * pi   # wheel diameter in meters
         count = 0
         then = time.time()
@@ -52,23 +47,24 @@ class OdometerThread (threading.Thread):
         dt = 0.0
         total_dist = 0.0
         while not self.stoprequest.isSet():
-            count = count + 1
-            now = time.time()
-            dt = now - then
-            total_dist = total_dist + wheel_circumference
-            spd = wheel_circumference / dt   
-            text = "count: %s speed: %.1fm/s  dist: %.1fm \r" %(count, spd, total_dist)
-            then = now
 
-            try:
-                self.socket.write_message({'text': text})
-            except tornado.websocket.WebSocketClosedError:
-                print "WebSocketClosedError error"
-
-            time.sleep(self.DT)
-
-        if self.stoprequest.isSet():
-            print "******** STOP IT ************"
+           if io.input(door_pin):
+               if flag:
+                   flag = False
+               else:
+                   if not flag:
+                       flag = True
+                       count = count + 1
+                       now = time.time()
+                       dt = now - then
+                       total_dist = total_dist + wheel_circumference
+                       spd = wheel_circumference / dt   
+                       text = "count: %s speed: %.1fm/s  dist: %.1fm \r" %(count, spd, total_dist)
+		       print text
+		       self.socket.write_message({'text':text})
+		       then = now
+           if self.stoprequest.isSet():
+               print "******** STOP IT ************"
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -118,7 +114,6 @@ def make_app():
     ])
 
 if __name__ == "__main__":
-    sensor_setup()
     app = make_app()
     app.listen(8888)
     tornado.ioloop.IOLoop.current().start()
@@ -132,7 +127,7 @@ if __name__ == "__main__":
 
 
 
-def sensor():
+def sensor(socket):
 
     # io.setmode(io.BCM)
      
@@ -161,5 +156,7 @@ def sensor():
                 dt = now - then
                 total_dist = total_dist + wheel_circumference
                 spd = wheel_circumference / dt   
-                print "count: %s speed: %.1fm/s  dist: %.1fm \r" %(count, spd, total_dist)
-                then = now
+                text = "count: %s speed: %.1fm/s  dist: %.1fm \r" %(count, spd, total_dist)
+		print text
+		socket.write_message({'text':text})
+		then = now
