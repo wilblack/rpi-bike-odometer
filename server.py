@@ -30,7 +30,7 @@ clients = []
 
 class OdometerThread (threading.Thread):
 
-    def __init__(self, socket):
+    def __init__(self, socket=None):
         super(OdometerThread, self).__init__()
         self.stoprequest = threading.Event()
         self.socket = socket
@@ -61,7 +61,8 @@ class OdometerThread (threading.Thread):
                         spd = wheel_circumference / dt
                         text = "count: %s speed: %.1fm/s  dist: %.1fm \r" % (count, spd, total_dist)
                         print text
-                        self.socket.write_message({'text': text})
+                        if self.socket:
+                            self.socket.write_message({'text': text})
                         then = now
             if self.stoprequest.isSet():
                 print "******** STOP IT ************"
@@ -116,8 +117,9 @@ def make_app():
 if __name__ == "__main__":
     app = make_app()
     app.listen(8888)
+    odo = OdometerThread(self).start()
     tornado.ioloop.IOLoop.current().start()
-
+    
 
 
 
