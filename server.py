@@ -48,23 +48,23 @@ class OdometerThread (threading.Thread):
         total_dist = 0.0
         while not self.stoprequest.isSet():
 
-           if io.input(door_pin):
-               if flag:
-                   flag = False
-               else:
-                   if not flag:
-                       flag = True
-                       count = count + 1
-                       now = time.time()
-                       dt = now - then
-                       total_dist = total_dist + wheel_circumference
-                       spd = wheel_circumference / dt   
-                       text = "count: %s speed: %.1fm/s  dist: %.1fm \r" %(count, spd, total_dist)
-		       print text
-		       self.socket.write_message({'text':text})
-		       then = now
-           if self.stoprequest.isSet():
-               print "******** STOP IT ************"
+            if io.input(door_pin):
+                if flag:
+                    flag = False
+                else:
+                    if not flag:
+                        flag = True
+                        count = count + 1
+                        now = time.time()
+                        dt = now - then
+                        total_dist = total_dist + wheel_circumference
+                        spd = wheel_circumference / dt
+                        text = "count: %s speed: %.1fm/s  dist: %.1fm \r" % (count, spd, total_dist)
+                        print text
+                        self.socket.write_message({'text': text})
+                        then = now
+            if self.stoprequest.isSet():
+                print "******** STOP IT ************"
 
 
 class MainHandler(tornado.web.RequestHandler):
