@@ -10,9 +10,9 @@ window.onload = function() {
             var distEl = document.getElementById("dist");
 
             //msgEl.innerHTML = data.text;
-            spdEl.innerHTML = data.spd;
-            durationEl.innerHTML = data.duration;
-            distEl.innerHTML = data.dist;
+            spdEl.innerHTML = data.spd.toFixed(1);
+            durationEl.innerHTML = data.duration.toFixed(2);
+            distEl.innerHTML = data.dist.toFixed(2);
 
 
         };
