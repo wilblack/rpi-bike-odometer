@@ -15,12 +15,12 @@ try:
 except:
     print "Could not import RPi.GPIO. Are you on a Raspberry Pi?"
 
-        
+
 io.setmode(io.BCM)
-         
+
 pir_pin = 18
 door_pin = 23
-        
+
 io.setup(pir_pin, io.IN)         # activate input
 io.setup(door_pin, io.IN, pull_up_down=io.PUD_UP)  # activate input with Pull
 print "Sensors intialized correctly"
@@ -48,16 +48,16 @@ class OdometerThread (threading.Thread):
         total_dist = 0.0
         while not self.stoprequest.isSet():
             print "door_pin: ", io.input(door_pin)
-	    print "flag: ", flag
-	    if io.input(door_pin):
+        print "flag: ", flag
+        if io.input(door_pin):
                 if flag:
                     flag = False
-		    print "flag is True set to False", flag
+            print "flag is True set to False", flag
                 else:
-	            print "flag is False", flag
+                print "flag is False", flag
                     if not flag:
                         flag = True
-			print "set flag to True"
+            print "set flag to True"
                         count = count + 1
                         now = time.time()
                         dt = now - then
@@ -66,7 +66,13 @@ class OdometerThread (threading.Thread):
                         text = "count: %s speed: %.1fm/s  dist: %.1fm \r" % (count, spd, total_dist)
                         print text
                         if self.socket:
-                            self.socket.write_message({'text': text})
+                            self.socket.write_message({
+                                'text': text,
+                                'spd': spd,
+                                'dist': total_dist,
+                                'duration': dt
+
+                            })
                         then = now
             if self.stoprequest.isSet():
                 print "******** STOP IT ************"
