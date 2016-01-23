@@ -46,18 +46,13 @@ class OdometerThread (threading.Thread):
         spd = 0.0
         dt = 0.0
         total_dist = 0.0
-        while not self.stoprequest.isSet():
-            print "door_pin: ", io.input(door_pin)
-        print "flag: ", flag
-        if io.input(door_pin):
+        while  not self.stoprequest.isSet():
+            if io.input(door_pin) == 0:
                 if flag:
                     flag = False
-            print "flag is True set to False", flag
                 else:
-                print "flag is False", flag
                     if not flag:
                         flag = True
-            print "set flag to True"
                         count = count + 1
                         now = time.time()
                         dt = now - then
@@ -71,12 +66,11 @@ class OdometerThread (threading.Thread):
                                 'spd': spd,
                                 'dist': total_dist,
                                 'duration': dt
-
                             })
                         then = now
             if self.stoprequest.isSet():
                 print "******** STOP IT ************"
-
+        self.stoprequest.set()
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
