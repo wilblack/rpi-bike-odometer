@@ -1,0 +1,93 @@
+/* Stars 
+------------------------------------- */
+
+
+
+#space {
+  width: 400px;
+  height:300px;
+  overflow: hidden;
+}
+
+.stars {
+  position:relative;
+  width:400px;
+  height:300px;
+  left:0px;
+
+}
+
+.stars {
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #f99, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 40px 140px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 50px 320px, #99f, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 90px 80px, #f99, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 130px 160px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 160px 240px, #99f, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 300px 300px;
+  animation: zoom 5s infinite;
+  opacity: 0;
+}
+
+.stars:nth-child(1) {
+  background-position: 50% 50%;
+  animation-delay: 0s;
+}
+.stars:nth-child(2) {
+  background-position: 30% 60%;
+  top:-300px;
+  animation-delay: 1s;
+}
+.stars:nth-child(3) {
+  background-position: 10% -30%;
+  top:-600px;
+  animation-delay: 2s;
+}
+.stars:nth-child(4) {
+  background-position: -10% -80%;
+  top:-900px;
+  animation-delay: 3s;
+}
+.stars:nth-child(5) {
+  background-position: 0% 30%;
+  top:-1200px;
+  animation-delay: 4s;
+}
+
+@keyframes zoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+    animation-timing-function: ease-in;
+  }
+  60% {
+    opacity: 1;
+    transform: scale(2.0);
+    animation-timing-function: linear;
+  } 
+  75% {
+    opacity: 1;
+    transform: scale(3.5);
+    animation-timing-function: linear;
+  }
+  90% {
+    opacity: 1;
+    transform: scale(5);
+    animation-timing-function: linear;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(7);
+  }
+}
+
+/* Demo syles 
+------------------------------------- */
+
+body {
+  background: #000;
+  
+}

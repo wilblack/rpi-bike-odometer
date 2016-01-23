@@ -1,47 +1,94 @@
-<script>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LCARS</title>
+  <link rel="stylesheet" href="css/lcars.css">
+  <link rel="stylesheet" href="css/stars.css">
+  <script src="main.js"></script>
+  <style>
+  html, body { 
+    background: black;
+  }
+  .lcars-container {
+    width:500px;
+    margin:auto;
+    overflow:hidden;
+  }
 
-    window.onload = function() {
-        DOMAIN = "192.168.0.112:8888";
-        SOCKET_URL = "ws://" + DOMAIN + "/ws";
+  </style>
+</head>
+<body>
+  <div class="lcars-container">
+
+    <!-- TOP ROW
+    =========================================================== -->
+    <div class="lcars-row spaced">
+
+      <!-- TOP LEFT ELBOW
+      =========================================================== -->
+      <div class="lcars-column u-2-8 lcars-elbow left bottom lcars-blue-bg">
         
-        console.log("opening socket connection to " + SOCKET_URL)
-        socket = new WebSocket(SOCKET_URL);
-        
-        socket.onopen = function(){
-            console.log("connection opened....");
-            handshake = {"text": "Hello from the browser"};
-            var out = JSON.stringify(handshake);
-            socket.send(out);
-        }
+      </div>
 
-        socket.onmessage = function(msg) {
-            /*
-            Listens for
-            - sensor_values
-            - new - This should have a camera IP address un the keyword 'camera_url'. 
-            */
-
-            var data = JSON.parse(msg.data);
-            console.log("['onmessage'] ", data);
-            var el = document.getElementById("msg");
-            el.innerHTML = data.text;
-
-        }
-
-        socket.onclose = function(){
-            //alert("connection closed....");
-            console.log("The connection has been closed.");
-            
-         }
-
-        socket.onerror = function(){
-            console.log("The was an error.");
-         }
-
-    };
-    
+      <!-- TOP DIVIDER AND BUTTONS
+      =========================================================== -->
+      <div class="lcars-column u-6-8 lcars-divider lcars-blue-tan-divide">
+      </div>
 
 
-</script>
-<h1>Bike Odometer</h1>
-<div id="msg"></div>
+    </div>
+
+    <div class="lcars-row">
+
+      <!-- LEFT MENU
+      =========================================================== -->
+      <div class="lcars-column u-2-8">
+        <ul class="lcars-menu">
+          <li class="lcars-blue-bg"><a href="#">Speed</a></li>
+          <li id="spd" class="lcars-blue-bg tall">2.4 mph</li>
+          <li class="lcars-tan-bg">Time</li>
+          <li id="duration" class="lcars-tan-bg tall">35:23</li>
+          <li class="lcars-tan-bg">Distance</li>
+          <li id="dist" class="lcars-tan-bg tall">2.4</li>
+        </ul>
+      </div>
+
+      <!-- CENTER SECTION
+      =========================================================== -->
+      <div class="lcars-column u-6-8">
+        <div id="space">
+          <div class="stars"></div>
+          <div class="stars"></div>
+          <div class="stars"></div>
+          <div class="stars"></div>
+          <div class="stars"></div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- BOTTOM ROW
+    =========================================================== -->
+    <div class="lcars-row spaced">
+
+      <!-- BOTTOM LEFT ELBOW
+      =========================================================== -->
+      <div class="lcars-column u-2-8 lcars-elbow left top lcars-tan-bg">
+      </div>
+
+      <!-- BOTTOM DIVIDER AND BUTTONS
+      =========================================================== -->
+      <div class="lcars-column u-6-8 lcars-divider bottom lcars-tan-blue-divide">
+        <div class="lcars-row">
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+</body>
+</html>
