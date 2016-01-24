@@ -1,8 +1,11 @@
 window.onload = function() {
-        DOMAIN = "192.168.0.112:8888";
+        DOMAIN = "192.168.0.102:8888";
         SOCKET_URL = "ws://" + DOMAIN + "/ws";
         
-        console.log("opening socket connection to " + SOCKET_URL)
+        console.log("opening socket connection to " + SOCKET_URL);
+        var bgAudio = document.getElementById("bg-audio");
+        bgAudio.play();
+
         updateDisplay = function(data){
             var msgEl = document.getElementById("msg");
             var spdEl = document.getElementById("spd");
