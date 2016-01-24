@@ -121,7 +121,7 @@ def make_app():
 if __name__ == "__main__":
     app = make_app()
     app.listen(8888)
-    odo = OdometerThread().start()
+    #odo = OdometerThread().start()
     tornado.ioloop.IOLoop.current().start()
     
 
