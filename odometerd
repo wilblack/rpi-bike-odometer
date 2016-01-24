@@ -6,7 +6,7 @@
 
 # Edit this to the appropriate path. No trailing slash
 DAEMON_PATH="/home/pi/projects/rpi-bike-odometer"
-DAEMON=rpi_odometer.sh
+DAEMON=start_rpi_odometer.sh
 NAME=rpi_odometer
 DESC="This starts the rpi odometer server"
 DAEMONOPTS=""
